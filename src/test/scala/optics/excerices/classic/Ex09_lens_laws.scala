@@ -5,7 +5,7 @@ import org.specs2.cats.CatsEqMatcher
 
 class LensLawsSpec extends Specification with CatsEqMatcher {
   override def is =
-    """
+    s2"""
       An Lens must satisfy following properties:
         setting a field and than getting it back should return originally set field value $setting
         getting a field and then setting it back should return  the same field value $getting
