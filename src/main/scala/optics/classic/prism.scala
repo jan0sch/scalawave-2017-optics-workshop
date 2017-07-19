@@ -4,15 +4,21 @@ package classic
 abstract class Prism[S, A] extends APrism[S, A] {
   self =>
 
-  def getOrModify(s: S): Either[S, A] = ???
+  def getOrModify(s: S): Either[S, A] = getOption(s) match {
+    case None => Left(s)
+    case Some(a) => Right(a)
+  }
+
 
   def getOption(s: S): Option[A]
 
   def reverseGet(a: A): S
 
-  def set(a: A): S => S = ???
+  def set(a: A): S => S = modify(_ => a)
 
-  final def modify(f: A => A): S => S = ???
+  final def modify(f: A => A): S => S = s => getOption(s).map(a => reverseGet(f(a))).getOrElse(s)
+
+  final def modifyOption(f: A => A): S => Option[S] = s => getOption(s).map(a => reverseGet(f(a)))
 
   final def composePrism[C](other: Prism[A, C]): Prism[S, C] = ???
   /**

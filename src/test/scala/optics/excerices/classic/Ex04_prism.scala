@@ -43,6 +43,6 @@ class PrismSpec extends Specification with CatsEqMatcher {
     * Hint: Use the apply method from Iso
     *
     */
-  lazy val prism: Prism[String, MS] = ???
+  lazy val prism: Prism[String, MS] = Prism[String, MS](s => Try(s.toDouble).toOption.map(MS.apply))(ms => ms.v.toString)
 
 }
