@@ -35,15 +35,15 @@ class PrismCompositionSpec extends Specification with CatsEqMatcher {
   /**
     * Copied from previous example.
     */
-  lazy val stringPrism: Prism[String, Double] = ???
+  lazy val stringPrism: Prism[String, Double] = Prism[String, Double](s => Try(s.toDouble).toOption)(d => d.toString)
 
   /**
     * TODO: Define a prism which will convert double to m/s if input is non-negative number
     */
-  lazy val positiveNumberPrism: Prism[Double, MS] = ???
+  lazy val positiveNumberPrism: Prism[Double, MS] = Prism[Double, MS](d => if (d < 0) None else Option(MS(d)))(ms => ms.v)
 
   /**
     * Compose both prisms Prism[String, Double] -> Prism[Double, MS] to obtain conversion between String and MS
     */
-  lazy val msPrism: Prism[String, MS] = ???
+  lazy val msPrism: Prism[String, MS] = stringPrism.composePrism(positiveNumberPrism)
 }

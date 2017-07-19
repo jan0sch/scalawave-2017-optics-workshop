@@ -20,7 +20,16 @@ abstract class Prism[S, A] extends APrism[S, A] {
 
   final def modifyOption(f: A => A): S => Option[S] = s => getOption(s).map(a => reverseGet(f(a)))
 
-  final def composePrism[C](other: Prism[A, C]): Prism[S, C] = ???
+  final def composePrism[C](other: Prism[A, C]): Prism[S, C] = new Prism[S, C] {
+
+    override def getOption(s: S): Option[C] = for {
+      o <- self.getOption(s)
+      p <- other.getOption(o)
+    } yield p
+
+    override def reverseGet(a: C): S = self.reverseGet(other.reverseGet(a))
+  }
+
   /**
     * Compose with other optics
     */
