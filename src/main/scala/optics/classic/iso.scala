@@ -10,9 +10,9 @@ abstract class Iso[S, A] extends AIso[S, A] {
 
   def reverseGet(t: A): S
 
-  def reverse: Iso[A, S] = ???
+  def reverse: Iso[A, S] = Iso[A, S](reverseGet)(get)
 
-  final def modify(f: A => A): S => S = s => ???
+  final def modify(f: A => A): S => S = s => reverseGet(f(get(s)))
 
   //For compatibility reason
   def set(a: A): S => S = modify(_ => a)
