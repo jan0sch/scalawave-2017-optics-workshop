@@ -35,7 +35,7 @@ class IsoCompositionSpec extends Specification with CatsEqMatcher {
     *
     * Hint: Use the apply method from Iso
     */
-  lazy val si: Iso[MS, KMH] = ???
+  lazy val si: Iso[MS, KMH] = Iso[MS, KMH](ms => KMH(ms.v * 3600 / 1000))(kmh => MS(kmh.v * 1000 / 3600))
 
   /**
     * TODO: Implement me!
@@ -46,7 +46,7 @@ class IsoCompositionSpec extends Specification with CatsEqMatcher {
     *
     * Hint: Use the apply method from Iso
     */
-  lazy val imperial: Iso[KMH, MPH] = ???
+  lazy val imperial: Iso[KMH, MPH] = Iso[KMH, MPH](kmh => MPH(kmh.v * 0.62137d))(mph => KMH(mph.v * 1.60934d))
 
   /**
     * TODO: Implement me!
@@ -56,6 +56,6 @@ class IsoCompositionSpec extends Specification with CatsEqMatcher {
     * Hint: Types should align like Iso[MS, KMH] -> Iso[KMH, MPS] -> Iso[MS, MPS]
     *
     */
-  lazy val si2imperial: Iso[MS, MPH] = ???
+  lazy val si2imperial: Iso[MS, MPH] = si.composeIso(imperial)
 
 }

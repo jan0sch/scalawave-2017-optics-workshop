@@ -20,7 +20,7 @@ abstract class Iso[S, A] extends AIso[S, A] {
   /**
     * Compose with other iso
     */
-  final def composeIso[C](other: Iso[A, C]): Iso[S, C] = ???
+  final def composeIso[C](other: Iso[A, C]): Iso[S, C] = Iso[S, C](s => other.get(self.get(s)))(t => self.reverseGet(other.reverseGet(t)))
   /**
     * Compose with other optics
     */
