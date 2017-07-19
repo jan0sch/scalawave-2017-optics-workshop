@@ -7,9 +7,13 @@ abstract class Lens[S, A] extends ALens[S, A] {self =>
 
   def set(a: A): S => S
 
-  def modify(f: A => A): S => S = ???
+	def modify(f: A => A): S => S = s => set(f(get(s)))(s)
 
-  def composeLens[C](other: Lens[A, C]): Lens[S, C] = ???
+  def composeLens[C](other: Lens[A, C]): Lens[S, C] = new Lens[S, C] {
+		override def get(s: S): C = other.get(self.get(s))
+		
+		override def set(a: C): (S) => S = s => self.modify(other.set(a))(s)
+	}
 
   /**
     * Compose with other optics

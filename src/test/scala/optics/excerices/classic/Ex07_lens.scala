@@ -36,6 +36,6 @@ class LensSpec extends Specification with CatsEqMatcher {
     * Hint: Use the apply method from Lens
     *
     */
-  lazy val lens: Lens[MS, Double] = ???
+		lazy val lens: Lens[MS, Double] = Lens[MS, Double](_.v)(v => ms => ms.copy(v = v))
 
 }
